@@ -49,7 +49,7 @@ add_executable(${CMAKE_PROJECT_NAME})
 
 
 set(STMEPIC_MIN_VERSION_REQUIRED_ENABLED ON)
-set(STMEPIC_MIN_VERSION_REQUIRED 2.330)
+set(STMEPIC_MIN_VERSION_REQUIRED 2.379)
 
 add_subdirectory(src/StmEpic)
 
@@ -70,7 +70,7 @@ target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
   # Add user sources here
   src/main_prog.cpp
-  src/main_callbacks.cpp
+  src/module_callbacks.cpp
     src/module.cpp
 
 )

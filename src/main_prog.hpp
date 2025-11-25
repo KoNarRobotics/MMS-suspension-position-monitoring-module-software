@@ -23,6 +23,7 @@ namespace se = stmepic;
 // BOARD SETTINGS
 extern std::shared_ptr<moducard::ModuCardBoard> modu_card_board;
 extern uint32_t CAN_MODULE_BASE_ADDRESS;
+
 ////////////////////////////////////////////////////////////////////////////////
 // HARDWARE INTERFACES
 extern std::shared_ptr<se::I2cBase> i2c;
