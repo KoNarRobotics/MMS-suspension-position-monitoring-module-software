@@ -43,6 +43,17 @@ project(${CMAKE_PROJECT_NAME})
 message("Build type: " ${CMAKE_BUILD_TYPE})
 
 
+set(MC_MAKE_LIBRARIES ON)
+
+add_library(mc_firmware STATIC)
+add_subdirectory(src/moducard_firmware)
+target_include_directories( mc_firmware PUBLIC
+  generated/firmware
+)
+
+
+
+
 
 # Create an executable object type
 add_executable(${CMAKE_PROJECT_NAME})
@@ -50,6 +61,7 @@ add_executable(${CMAKE_PROJECT_NAME})
 
 set(STMEPIC_MIN_VERSION_REQUIRED_ENABLED ON)
 set(STMEPIC_MIN_VERSION_REQUIRED 2.379)
+set(STMEPIC_ENABLE_CAN ON)
 
 add_subdirectory(src/StmEpic)
 
@@ -59,7 +71,8 @@ message(INFO "Linker flags: " ${CMAKE_C_LINK_FLAGS})
 # Add STM32CubeMX generated sources
 add_subdirectory(cmake/stm32cubemx)
 
-add_subdirectory(src/ModuCard-software-base)
+# add_subdirectory(src/ModuCard-software-base)
+
 
 # Link directories setup
 target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
@@ -71,7 +84,7 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
   # Add user sources here
   src/main_prog.cpp
   src/module_callbacks.cpp
-    src/module.cpp
+  src/module.cpp
 
 )
 
@@ -91,7 +104,8 @@ target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
 target_link_libraries(${CMAKE_PROJECT_NAME}
   stm32cubemx
   stmepic
-  can_constants
+  mc_firmware
+  # can_constants
 )
 
 

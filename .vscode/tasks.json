@@ -48,7 +48,12 @@
         "'openocd -f ~/openocd-reset.conf'"
       ],
       "problemMatcher": []
-    }
+    },
+    {
+      "label": "flash",
+      "type": "shell",
+      "command": "arm-none-eabi-gdb -q build/firmware.elf -ex \"target extended-remote /dev/ttyACM1\" -ex \"monitor swdp_scan\" -ex \"attach 1\" -ex \"load\" -ex \"detach\" -ex \"quit\""
+    },
   ],
   "inputs": [
     {

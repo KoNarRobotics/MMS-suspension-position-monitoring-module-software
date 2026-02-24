@@ -4,12 +4,13 @@
 #include "gpio.hpp"
 #include "i2c.hpp"
 #include "main.hpp"
+#include "mc_firmware/mc_common.hpp"
 #include "stmepic.hpp"
 #include "uart.hpp"
 #include "version.hpp"
 
 // USB Device includes
-#include "modu_card.hpp"
+// #include "modu_card.hpp"
 
 namespace se = stmepic;
 
@@ -21,7 +22,7 @@ namespace se = stmepic;
 
 ////////////////////////////////////////////////////////////////////////////////
 // BOARD SETTINGS
-extern std::shared_ptr<moducard::ModuCardBoard> modu_card_board;
+// extern std::shared_ptr<moducard::ModuCardBoard> modu_card_board;
 extern uint32_t CAN_MODULE_BASE_ADDRESS;
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -88,6 +88,29 @@
       "runToEntryPoint": "main",
       "servertype": "stlink",
       "serialNumber": "${input:stlink_id}"
+    },
+    {
+      "name": "STM32F405 – Black Magic (WORKING)",
+      "type": "cortex-debug",
+      "request": "attach",
+      "cwd": "${workspaceFolder}",
+      "executable": "build/firmware.elf",
+      "servertype": "external",
+      "gdbPath": "arm-none-eabi-gdb",
+      "gdbTarget": "/dev/ttyACM1",
+      // "preLaunchTask": "build",
+      // "overrideLaunchCommands": [],
+      "postAttachCommands": [
+        // "target extended-remote /dev/ttyACM1",
+        "monitor swdp_scan",
+        "attach 1",
+        "monitor halt",
+        "monitor erase_mass",
+        "load",
+        "tbreak main",
+        "continue"
+      ],
+      "showDevDebugOutput": "raw"
     }
   ],
   "inputs": [

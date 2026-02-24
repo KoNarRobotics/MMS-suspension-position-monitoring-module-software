@@ -2,16 +2,16 @@
 #include "Timing.hpp"
 #include "atmodem.hpp"
 #include "can2.0.hpp"
-#include "can_messages.h"
 #include "i2c.hpp"
 #include "logger.hpp"
 #include "main.hpp"
-#include "modu_card.hpp"
 #include "random_number_generator.hpp"
 #include "sha256.hpp"
 #include "simple_task.hpp"
 #include "uart.hpp"
 #include "usbd_cdc_if.h"
+
+// #include "CO_app_STM32.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 //
@@ -21,7 +21,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 // BOARD SETTINGS
-std::shared_ptr<moducard::ModuCardBoard> modu_card_board;
+// std::shared_ptr<moducard::ModuCardBoard> modu_card_board;
 
 ////////////////////////////////////////////////////////////////////////////////
 // HARDWARE INTERFACES
@@ -88,6 +88,7 @@ extern "C" {
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
   if (htim->Instance == TIM6) {
     se::Ticker::get_instance().irq_update_ticker();
+    // canopen_app_interrupt();
     HAL_IncTick();
   }
 
@@ -96,6 +97,14 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
   }
 }
 }
+
+Status canopen_task(SimpleTask &, void *args) {
+  (void)args;
+  // canopen_app_process();
+  return Status::OK();
+}
+
+extern void MX_CAN1_Init();
 
 void main_prog() {
   // START ALL INTERRUPTS
@@ -152,16 +161,29 @@ void main_prog() {
   can_filter2.FilterMaskIdLow = 0;
   can_filter2.SlaveStartFilterBank = 0;
 
+  // CANopenNodeSTM32 canOpenNodeSTM32;
+  // canOpenNodeSTM32.CANHandle = &hcan1;
+  // canOpenNodeSTM32.HWInitFunction = MX_CAN1_Init;
+  // canOpenNodeSTM32.timerHandle = &htim6;
+  // canOpenNodeSTM32.desiredNodeID = 1;
+  // canOpenNodeSTM32.baudrate = 1000;
+  // canopen_app_init(&canOpenNodeSTM32);
+
+  // SimpleTask st;
+  // st.task_init(canopen_task, nullptr, 1, nullptr, 1024, tskIDLE_PRIORITY,
+  //              "CANOpenTask", true);
+  // st.task_run();
+
   STMEPIC_ASSING_TO_OR_HRESET(
       can2, se::CAN::Make(hcan2, can_filter2, nullptr, nullptr));
 
   STMEPIC_NONE_OR_HRESET(can1->hardware_start());
   STMEPIC_NONE_OR_HRESET(can2->hardware_start());
 
-  STMEPIC_ASSING_TO_OR_HRESET(
-      modu_card_board,
-      moducard::ModuCardBoard::Make(CAN_MODULE_BASE_ADDRESS, gpio_user_led_1,
-                                    can1, can2, init_board, VERSION_MAJOR,
-                                    VERSION_MINOR, VERSION_BUILD));
-  STMEPIC_NONE_OR_HRESET(modu_card_board->device_start());
+  // STMEPIC_ASSING_TO_OR_HRESET(
+  //     modu_card_board,
+  //     moducard::ModuCardBoard::Make(CAN_MODULE_BASE_ADDRESS, gpio_user_led_1,
+  //                                   can1, can2, init_board, VERSION_MAJOR,
+  //                                   VERSION_MINOR, VERSION_BUILD));
+  // STMEPIC_NONE_OR_HRESET(modu_card_board->device_start());
 }

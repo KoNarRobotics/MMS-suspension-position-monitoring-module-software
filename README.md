@@ -59,3 +59,18 @@ You can always create your own files and include them in CMakeLists.txt .
 
 -  **".vscode/tasks.json"** 
  in **"inputs" -> "stlinkID" -> "options"** you can add multiple stlink ids if you have multiple boards with the same software, You can add them some fancy names to recognize them easel.
+
+
+# black magic
+soon to be added
+
+
+# Generate Interface
+Generate dummy interface
+```bash
+python3 src/moducard_firmware/moducard_generators/mc_generator.py -f -d --force  src/moducard_firmware/moducard_generators/modules/mcan_basic_module_dummy.yaml
+```
+Generate real interface
+```bash
+python3 src/moducard_firmware/moducard_generators/mc_generator.py -f --force  example_module_config.yaml
+```
